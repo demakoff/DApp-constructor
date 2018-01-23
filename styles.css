@@ -1,0 +1,16 @@
+.title {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.input-form {
+    margin: 20px auto;
+}
+
+.methods-list {
+    margin: 30px auto;
+}
+
+.methods-list .row {
+    margin-bottom: 20px;
+}
