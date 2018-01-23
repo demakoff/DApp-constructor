@@ -33,7 +33,7 @@
             'constant': false,
             'inputs': [
                 {
-                    'name': '_spender',
+                    'name': '_receiver',
                     'type': 'address'
                 },
                 {
@@ -483,208 +483,57 @@
         }
         ];
     const storjAddress = '0xB64ef51C888972c908CFacf59B47C1AfBC0Ab8aC';
-    const daoCasinoAbi = [
-        {
-            'constant': true,
-            'inputs': [],
-            'name': 'name',
-            'outputs': [ { 'name': '', 'type': 'string' } ],
-            'payable': false,
-            'type': 'function'
-        }, {
-            'constant': false,
-            'inputs': [ { 'name': '_spender', 'type': 'address' }, { 'name': '_amount', 'type': 'uint256' } ],
-            'name': 'approve',
-            'outputs': [ { 'name': 'success', 'type': 'bool' } ],
-            'payable': false,
-            'type': 'function'
-        }, {
-            'constant': true,
-            'inputs': [],
-            'name': 'totalSupply',
-            'outputs': [ { 'name': 'totalSupply', 'type': 'uint256' } ],
-            'payable': false,
-            'type': 'function'
-        }, {
-            'constant': false,
-            'inputs': [ { 'name': '_from', 'type': 'address' }, {
-                'name': '_to',
-                'type': 'address'
-            }, { 'name': '_amount', 'type': 'uint256' } ],
-            'name': 'transferFrom',
-            'outputs': [ { 'name': 'success', 'type': 'bool' } ],
-            'payable': false,
-            'type': 'function'
-        }, {
-            'constant': true,
-            'inputs': [],
-            'name': 'decimals',
-            'outputs': [ { 'name': '', 'type': 'uint8' } ],
-            'payable': false,
-            'type': 'function'
-        }, {
-            'constant': false,
-            'inputs': [],
-            'name': 'seal',
-            'outputs': [],
-            'payable': false,
-            'type': 'function'
-        }, {
-            'constant': true,
-            'inputs': [ { 'name': '_owner', 'type': 'address' } ],
-            'name': 'balanceOf',
-            'outputs': [ { 'name': 'balance', 'type': 'uint256' } ],
-            'payable': false,
-            'type': 'function'
-        }, {
-            'constant': false,
-            'inputs': [],
-            'name': 'acceptOwnership',
-            'outputs': [],
-            'payable': false,
-            'type': 'function'
-        }, {
-            'constant': false,
-            'inputs': [ { 'name': 'data', 'type': 'uint256[]' } ],
-            'name': 'fill',
-            'outputs': [],
-            'payable': false,
-            'type': 'function'
-        }, {
-            'constant': true,
-            'inputs': [],
-            'name': 'owner',
-            'outputs': [ { 'name': '', 'type': 'address' } ],
-            'payable': false,
-            'type': 'function'
-        }, {
-            'constant': true,
-            'inputs': [],
-            'name': 'symbol',
-            'outputs': [ { 'name': '', 'type': 'string' } ],
-            'payable': false,
-            'type': 'function'
-        }, {
-            'constant': false,
-            'inputs': [ { 'name': '_to', 'type': 'address' }, { 'name': '_amount', 'type': 'uint256' } ],
-            'name': 'transfer',
-            'outputs': [ { 'name': 'success', 'type': 'bool' } ],
-            'payable': false,
-            'type': 'function'
-        }, {
-            'constant': true,
-            'inputs': [],
-            'name': 'newOwner',
-            'outputs': [ { 'name': '', 'type': 'address' } ],
-            'payable': false,
-            'type': 'function'
-        }, {
-            'constant': false,
-            'inputs': [ { 'name': 'tokenAddress', 'type': 'address' }, { 'name': 'amount', 'type': 'uint256' } ],
-            'name': 'transferAnyERC20Token',
-            'outputs': [ { 'name': 'success', 'type': 'bool' } ],
-            'payable': false,
-            'type': 'function'
-        }, {
-            'constant': true,
-            'inputs': [ { 'name': '_owner', 'type': 'address' }, { 'name': '_spender', 'type': 'address' } ],
-            'name': 'allowance',
-            'outputs': [ { 'name': 'remaining', 'type': 'uint256' } ],
-            'payable': false,
-            'type': 'function'
-        }, {
-            'constant': true,
-            'inputs': [],
-            'name': 'sealed',
-            'outputs': [ { 'name': '', 'type': 'bool' } ],
-            'payable': false,
-            'type': 'function'
-        }, {
-            'constant': false,
-            'inputs': [ { 'name': '_newOwner', 'type': 'address' } ],
-            'name': 'transferOwnership',
-            'outputs': [],
-            'payable': false,
-            'type': 'function'
-        }, { 'inputs': [], 'payable': false, 'type': 'constructor' }, {
-            'anonymous': false,
-            'inputs': [ { 'indexed': true, 'name': '_from', 'type': 'address' }, {
-                'indexed': true,
-                'name': '_to',
-                'type': 'address'
-            } ],
-            'name': 'OwnershipTransferred',
-            'type': 'event'
-        }, {
-            'anonymous': false,
-            'inputs': [ { 'indexed': true, 'name': '_from', 'type': 'address' }, {
-                'indexed': true,
-                'name': '_to',
-                'type': 'address'
-            }, { 'indexed': false, 'name': '_value', 'type': 'uint256' } ],
-            'name': 'Transfer',
-            'type': 'event'
-        }, {
-            'anonymous': false,
-            'inputs': [ { 'indexed': true, 'name': '_owner', 'type': 'address' }, {
-                'indexed': true,
-                'name': '_spender',
-                'type': 'address'
-            }, { 'indexed': false, 'name': '_value', 'type': 'uint256' } ],
-            'name': 'Approval',
-            'type': 'event'
-        } ];
     const daoCasinoAddress = '0x8aA33A7899FCC8eA5fBe6A608A109c3893A1B8b2';
-    const contractsArray = [
-        {
-            abi: erc20Abi,
-            address: storjAddress
-        }, {
-            abi: erc20Abi,
-            address: daoCasinoAddress
-        } ];
+
+    let contract;
 
     function findSmartContract() {
-        const contractAddress = document.getElementById('contractAddress').value;
-        let contractAbi = document.getElementById('contractAbi').value;
-        contractAbi = contractAbi ? JSON.parse(contractAbi.replace(/'/g, '"')) : undefined;
-        // contractAbi = JSON.parse(contractAbi.replace(/'/g, '"'));
+        const contractAddress = document.querySelector('#contractAddress').value;
+        let contractAbi = document.querySelector('#contractAbi').value;
+        contractAbi = contractAbi ? JSON.parse(contractAbi.replace(/'/g, '"')) : erc20Abi;
+        contract = web3.eth.contract(contractAbi).at(contractAddress);
 
-        outputContractDataByAddress(contractAddress, contractAbi);
+        outputContractData(contractAbi);
     }
 
-    function outputContractDataByAddress(address, abi = erc20Abi) {
-        const contract = web3.eth.contract(abi).at(address);
+    function outputContractData(abi) {
 
-        // const abiMethods = [
-        //     { name: 'name' },
-        //     { name: 'symbol' },
-        //     { name: 'totalSupply' },
-        //     { name: 'balanceOf', parameters: [ web3.eth.coinbase ] }
-        // ];
-        //
-        // const abiGetters = abi.filter((item) => item.constant);
-
-        document.getElementById('output-container').innerHTML = '';
-
+        document.querySelector('#output-container').innerHTML = '';
 
         abi.forEach(({ name, inputs = [] }) => {
 
-            if (!name) return;
+            if (!name) return;  // filter out events, fallback etc from ABI
 
-            const resultNode = templates.propertyLine({ name, inputs });
-            document.getElementById('output-container').appendChild(resultNode);
+            const resultNode = templates.getPropertyLine({ name, inputs });
+            document.querySelector('#output-container').appendChild(resultNode);
 
             if (inputs.length) { return; }
 
-            contract[ name ].call((error, result) => {
-                if (error) {
-                    return console.error(`Something went wrong with "${name}": ${error}`)
-                }
+            callContractMethod(name);
+        });
 
-                resultNode.getElementsByClassName('result__'+name)[0].innerText = result;
+        addEventListeners();
+    }
 
-            });
+    function addEventListeners() {
+        document.querySelectorAll('button[data-method-name]').forEach((button) => {
+            button.addEventListener('click', (e) => {
+                let methodName = e.target.getAttribute('data-method-name');
+                let args = document.querySelectorAll(`.result__${methodName} [data-arg-name]`);
+                let argsValues = [];
+                args.forEach((arg) => argsValues.push(arg.value));
+
+                callContractMethod(methodName, argsValues);
+            })
+        })
+    }
+
+    function callContractMethod(name, args = []) {
+        contract[ name ].call(...args, (error, result) => {
+            if (error) {
+                return console.error(`Something went wrong with "${name}": ${error}`)
+            }
+            document.querySelector(`.result__${name} [data-call-result]`).innerText = result;
         });
     }
 })();

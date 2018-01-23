@@ -14,3 +14,7 @@
 .methods-list .row {
     margin-bottom: 20px;
 }
+
+.method_args input {
+    width: 300px;
+}
