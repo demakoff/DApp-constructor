@@ -7,6 +7,7 @@
                     <div class='col-sm-8 method_args'>
                         <div class="result__${args.name}">
                             <div data-args-container></div>
+                            <div data-call-button></div>
                             <div data-call-result></div>
                         </div>                        
                     </div>`;
@@ -23,13 +24,12 @@
         });
 
         if (args.inputs.length) {
-            const buttonNode = document.createElement('button');
-            buttonNode.setAttribute('type', 'button');
-            buttonNode.setAttribute('data-method-name', args.name);
-            buttonNode.classList.add("btn");
-            buttonNode.classList.add("btn-info");
-            buttonNode.innerText = "Call with args";
-            resultElementNode.appendChild(buttonNode);
+            let callButtonNode = resultNode.querySelector(`.result__${args.name} [data-call-button]`);
+            callButtonNode.innerHTML = `<button 
+                                            type="button" 
+                                            data-method-name="${args.name}" 
+                                            class="btn btn-info">Call with args
+                                        </button>`;
         }
 
         return resultNode;
