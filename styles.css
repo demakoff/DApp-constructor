@@ -1,10 +1,22 @@
+#contractAddress {
+    width: 400px;
+}
+
 .title {
     margin-top: 30px;
     text-align: center;
 }
 
+.header-main-container {
+    display: flex;
+}
+
+.header-main-container > div {
+    margin: 10px;
+}
+
 .input-form {
-    margin: 20px auto;
+    margin: 0px auto;
 }
 
 .methods-list {

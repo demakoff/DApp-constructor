@@ -1,5 +1,8 @@
 (function() {
     window.findSmartContract = findSmartContract;
+    window.addToFavorite = addToFavorite;
+    window.fillFromFavorite = fillFromFavorite;
+    window.removeFromFavorite = removeFromFavorite;
 
     const dataTypes = [
         'uint8...uint256',
@@ -487,9 +490,37 @@
 
     let contract;
 
+    init();
+
+    function init() {
+        updateFavorites();
+    }
+
+    function updateFavorites() {
+        const favoriteContracts = JSON.parse(localStorage.getItem('favoriteContracts'));
+        let favoriteContainer = document.querySelector('[data-favor-container]');
+        favoriteContainer.innerHTML = '';
+
+        favoriteContracts.forEach((favContract) => {
+            const liNode = document.createElement('li');
+            liNode.innerHTML = `${favContract.name} 
+                        <button 
+                            type="button"
+                            onClick="fillFromFavorite('${favContract.address}');"
+                            class="btn btn-info btn-sm">Use it
+                        </button>
+                        <button 
+                            type="button"
+                            onClick="removeFromFavorite('${favContract.address}');"
+                            class="btn btn-info btn-sm">Remove
+                        </button>`;
+            favoriteContainer.appendChild(liNode);
+        });
+    }
+
     function findSmartContract() {
-        const contractAddress = document.querySelector('#contractAddress').value;
-        let contractAbi = document.querySelector('#contractAbi').value;
+        const contractAddress = document.querySelector('[data-contract-address]').value;
+        let contractAbi = document.querySelector('[data-contract-abi]').value;
         contractAbi = contractAbi ? JSON.parse(contractAbi.replace(/'/g, '"')) : erc20Abi;
         contract = web3.eth.contract(contractAbi).at(contractAddress);
 
@@ -498,14 +529,14 @@
 
     function outputContractData(abi) {
 
-        document.querySelector('#output-container').innerHTML = '';
+        document.querySelector('[data-output-container]').innerHTML = '';
 
         abi.forEach(({ name, inputs = [] }) => {
 
             if (!name) return;  // filter out events, fallback etc from ABI
 
             const resultNode = templates.getPropertyLine({ name, inputs });
-            document.querySelector('#output-container').appendChild(resultNode);
+            document.querySelector('[data-output-container]').appendChild(resultNode);
 
             if (inputs.length) { return; }
 
@@ -535,5 +566,34 @@
             }
             document.querySelector(`.result__${name} [data-call-result]`).innerText = result;
         });
+    }
+
+    function addToFavorite() {
+        const address = document.querySelector('[data-contract-address]').value;
+        const abi = document.querySelector('[data-contract-abi]').value;
+        let favoriteContracts = JSON.parse(localStorage.getItem('favoriteContracts')) || [];
+        const duplicate = favoriteContracts.find((item) => item.address === address);
+        if (duplicate) {
+            return alert('This address already in favorite');
+        }
+        const name = prompt('Please enter contract name');
+        if (!name) return;
+        favoriteContracts.push({ name, address, abi });
+        localStorage.setItem('favoriteContracts', JSON.stringify(favoriteContracts));
+        updateFavorites();
+    }
+
+    function fillFromFavorite(favoriteAddress) {
+        let favoriteContracts = JSON.parse(localStorage.getItem('favoriteContracts'));
+        const contractToFill = favoriteContracts.find((item) => item.address === favoriteAddress);
+        document.querySelector('[data-contract-address]').value = contractToFill.address;
+        document.querySelector('[data-contract-abi]').value = contractToFill.abi;
+    }
+
+    function removeFromFavorite(favoriteAddress){
+        let favoriteContracts = JSON.parse(localStorage.getItem('favoriteContracts'));
+        const contractToRewrite = favoriteContracts.filter((item) => item.address !== favoriteAddress);
+        localStorage.setItem('favoriteContracts', JSON.stringify(contractToRewrite));
+        updateFavorites();
     }
 })();

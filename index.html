@@ -13,25 +13,34 @@
 <div class="container app">
     <h1 class="display-4 title">Smart Contracter</h1>
 
-    <div class="container input-form">
-        <div class="form-group">
-            <label for="contractAddress">Contract address</label>
-            <input class="form-control"
-                   id="contractAddress"
-                   placeholder="Please enter address"
-                   value="0xB64ef51C888972c908CFacf59B47C1AfBC0Ab8aC">
+    <div class="container header-main-container">
+        <div class="input-form">
+            <div class="form-group">
+                <label for="contractAddress">Contract address</label>
+                <input class="form-control"
+                       id="contractAddress"
+                       data-contract-address
+                       placeholder="Please enter address"
+                       value="0xB64ef51C888972c908CFacf59B47C1AfBC0Ab8aC">
+            </div>
+            <div class="form-group">
+                <label for="contractAbi">Contract ABI</label>
+                <textarea class="form-control"
+                          id="contractAbi"
+                          data-contract-abi
+                          rows="5"
+                          placeholder="Please enter custom ABI or leave empty to use ERC20 ABI"></textarea>
+            </div>
+            <button type="button" class="btn btn-primary" onClick="findSmartContract();">Find Smart Contract</button>
+            <button type="button" class="btn btn-primary" onClick="addToFavorite();">Add To Favorite</button>
         </div>
-        <div class="form-group">
-            <label for="contractAbi">Contract ABI</label>
-            <textarea class="form-control"
-                      id="contractAbi"
-                      rows="5"
-                      placeholder="Please enter custom ABI or leave empty to use ERC20 ABI"></textarea>
+        <div class="favorite-form">
+            <h5>My Favorite Contracts:</h5>
+            <ul data-favor-container></ul>
         </div>
-        <button type="button" class="btn btn-primary" onClick="findSmartContract();">Find Smart Contract</button>
     </div>
 
-    <div class="container methods-list" id="output-container"></div>
+    <div class="container methods-list" data-output-container></div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
