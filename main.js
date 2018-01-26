@@ -18,6 +18,10 @@
         '...[]'
     ];
 
+    const dataTypesRegExp = {
+        address: /^0x[0-9a-f]{40}$/i
+    };
+
     const erc20Abi = [
         {
             'constant': true,
@@ -519,28 +523,36 @@
     }
 
     function findSmartContract() {
+        document.querySelector('[data-contract-address]').classList.remove('invalid');
+        document.querySelector('[data-output-container]').innerHTML = '';
         const contractAddress = document.querySelector('[data-contract-address]').value;
+
+        if (!dataTypesRegExp.address.test(contractAddress)) {
+            document.querySelector('[data-contract-address]').classList.add('invalid');
+            return;
+        }
+
         let contractAbi = document.querySelector('[data-contract-abi]').value;
         contractAbi = contractAbi ? JSON.parse(contractAbi.replace(/'/g, '"')) : erc20Abi;
-        contract = web3.eth.contract(contractAbi).at(contractAddress);
+        // contract = web3.eth.contract(contractAbi).at(contractAddress);
+        Contract(contractAbi, contractAddress);
 
         outputContractData(contractAbi);
     }
 
     function outputContractData(abi) {
 
-        document.querySelector('[data-output-container]').innerHTML = '';
-
-        abi.forEach(({ name, inputs = [] }) => {
+        abi.forEach((methodAbi) => {
+            const { name, inputs = [] } = methodAbi;
 
             if (!name) return;  // filter out events, fallback etc from ABI
 
-            const resultNode = templates.getPropertyLine({ name, inputs });
+            const resultNode = templates.getPropertyLine(methodAbi);
             document.querySelector('[data-output-container]').appendChild(resultNode);
 
             if (inputs.length) { return; }
 
-            callContractMethod(name);
+            Contract.api.callContractMethod(name);
         });
 
         addEventListeners();
@@ -550,22 +562,28 @@
         document.querySelectorAll('button[data-method-name]').forEach((button) => {
             button.addEventListener('click', (e) => {
                 let methodName = e.target.getAttribute('data-method-name');
+                let isMethodConstant = e.target.getAttribute('data-method-constant');
                 let args = document.querySelectorAll(`.result__${methodName} [data-arg-name]`);
                 let argsValues = [];
-                args.forEach((arg) => argsValues.push(arg.value));
+                let valid = true;
+                args.forEach((arg) => {
+                    arg.classList.remove('invalid');
+                    const argType = arg.getAttribute('data-arg-type');
+                    const validateRule = dataTypesRegExp[argType];
+                    if (validateRule && !validateRule.test(arg.value)) {
+                        valid = false;
+                        arg.classList.add('invalid');
+                    }
+                    return argsValues.push(arg.value)
+                });
 
-                callContractMethod(methodName, argsValues);
+                if (isMethodConstant === 'true') {
+                    valid && Contract.api.callContractMethod(methodName, argsValues);
+                } else {
+                    valid && Contract.api.createMethodTransaction(methodName, argsValues);
+                }
             })
         })
-    }
-
-    function callContractMethod(name, args = []) {
-        contract[ name ].call(...args, (error, result) => {
-            if (error) {
-                return console.error(`Something went wrong with "${name}": ${error}`)
-            }
-            document.querySelector(`.result__${name} [data-call-result]`).innerText = result;
-        });
     }
 
     function addToFavorite() {

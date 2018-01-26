@@ -1,5 +1,10 @@
-#contractAddress {
+.contract-address {
     width: 400px;
+}
+
+.invalid {
+    border-color: red;
+    border-width: 2px;
 }
 
 .title {
@@ -28,5 +33,5 @@
 }
 
 .method_args input {
-    width: 300px;
+    width: 400px;
 }

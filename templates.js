@@ -19,7 +19,10 @@
         let resultElementNode = resultNode.querySelector(`.result__${args.name} [data-args-container]`);
         args.inputs.forEach((input) => {
             const inputNode = document.createElement('div');
-            inputNode.innerHTML = `<input data-arg-name="${input.name}" placeholder="${input.name} ${input.type}">`;
+            inputNode.innerHTML = `<input data-arg-name="${input.name}" 
+                                        data-arg-type="${input.type}"
+                                        class="form-control"
+                                        placeholder="${input.name} ${input.type}">`;
             resultElementNode.appendChild(inputNode);
         });
 
@@ -28,6 +31,7 @@
             callButtonNode.innerHTML = `<button 
                                             type="button" 
                                             data-method-name="${args.name}" 
+                                            data-method-constant="${args.constant}"
                                             class="btn btn-info">Call with args
                                         </button>`;
         }
