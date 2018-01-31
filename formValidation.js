@@ -9,15 +9,10 @@
     };
 
     function validateArgsByEvent(args, methodName) {
-        let resultPromise = Promise.resolve([]);
-
-        args.forEach((argNode) => {
-            resultPromise = resultPromise.then(validateArg.bind(this, argNode, methodName));
-        });
-        return resultPromise;
+        return Promise.all(args.map(argNode => validateArg(argNode, methodName)));
     }
 
-    function validateArg({ name, type, value }, methodName, argsValues) {
+    function validateArg({ name, type, value }, methodName) {
             const validateRule = dataTypesRegExp[type];
             if (validateRule && !validateRule.test(value)) {
                 throw {
@@ -26,7 +21,6 @@
                     methodName
                 };
             }
-            argsValues.push(value);
-            return argsValues;
+            return value;
     }
 })();
