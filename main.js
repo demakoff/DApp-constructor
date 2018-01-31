@@ -492,8 +492,6 @@
     const storjAddress = '0xB64ef51C888972c908CFacf59B47C1AfBC0Ab8aC';
     const daoCasinoAddress = '0x8aA33A7899FCC8eA5fBe6A608A109c3893A1B8b2';
 
-    let contract;
-
     init();
 
     function init() {
@@ -534,7 +532,6 @@
 
         let contractAbi = document.querySelector('[data-contract-abi]').value;
         contractAbi = contractAbi ? JSON.parse(contractAbi.replace(/'/g, '"')) : erc20Abi;
-        // contract = web3.eth.contract(contractAbi).at(contractAddress);
         Contract(contractAbi, contractAddress);
 
         outputContractData(contractAbi);
@@ -552,7 +549,11 @@
 
             if (inputs.length) { return; }
 
-            Contract.api.callContractMethod(name);
+            Contract.api.read(name)
+                .then(
+                    result => { document.querySelector(`.result__${name} [data-call-result]`).innerText = result; },
+                    error => console.error(`Something went wrong with "${name}": ${error}`)
+                );
         });
 
         addEventListeners();
@@ -562,7 +563,6 @@
         document.querySelectorAll('button[data-method-name]').forEach((button) => {
             button.addEventListener('click', (e) => {
                 let methodName = e.target.getAttribute('data-method-name');
-                let isMethodConstant = e.target.getAttribute('data-method-constant');
                 let args = document.querySelectorAll(`.result__${methodName} [data-arg-name]`);
                 let argsValues = [];
                 let valid = true;
@@ -577,11 +577,11 @@
                     return argsValues.push(arg.value)
                 });
 
-                if (isMethodConstant === 'true') {
-                    valid && Contract.api.callContractMethod(methodName, argsValues);
-                } else {
-                    valid && Contract.api.createMethodTransaction(methodName, argsValues);
-                }
+                valid && Contract.api.execute(methodName, argsValues)
+                    .then(
+                        result => { document.querySelector(`.result__${methodName} [data-call-result]`).innerText = JSON.stringify(result); },
+                        error => console.error(`Something went wrong with "${methodName}": ${error}`)
+                    );
             })
         })
     }
