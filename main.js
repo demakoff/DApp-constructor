@@ -1,4 +1,4 @@
-(function() {
+(function () {
     window.findSmartContract = findSmartContract;
     window.addToFavorite = addToFavorite;
     window.fillFromFavorite = fillFromFavorite;
@@ -17,10 +17,6 @@
         'string',
         '...[]'
     ];
-
-    const dataTypesRegExp = {
-        address: /^0x[0-9a-f]{40}$/i
-    };
 
     const erc20Abi = [
         {
@@ -488,7 +484,7 @@
             'name': 'Approval',
             'type': 'event'
         }
-        ];
+    ];
     const storjAddress = '0xB64ef51C888972c908CFacf59B47C1AfBC0Ab8aC';
     const daoCasinoAddress = '0x8aA33A7899FCC8eA5fBe6A608A109c3893A1B8b2';
 
@@ -525,7 +521,7 @@
         document.querySelector('[data-output-container]').innerHTML = '';
         const contractAddress = document.querySelector('[data-contract-address]').value;
 
-        if (!dataTypesRegExp.address.test(contractAddress)) {
+        if (!formValidation.dataTypesRegExp.address.test(contractAddress)) {
             document.querySelector('[data-contract-address]').classList.add('invalid');
             return;
         }
@@ -561,27 +557,29 @@
 
     function addEventListeners() {
         document.querySelectorAll('button[data-method-name]').forEach((button) => {
-            button.addEventListener('click', (e) => {
-                let methodName = e.target.getAttribute('data-method-name');
-                let args = document.querySelectorAll(`.result__${methodName} [data-arg-name]`);
-                let argsValues = [];
-                let valid = true;
-                args.forEach((arg) => {
-                    arg.classList.remove('invalid');
-                    const argType = arg.getAttribute('data-arg-type');
-                    const validateRule = dataTypesRegExp[argType];
-                    if (validateRule && !validateRule.test(arg.value)) {
-                        valid = false;
-                        arg.classList.add('invalid');
+            button.addEventListener('click', (event) => {
+                const methodName = event.target.getAttribute('data-method-name');
+                const argsNodes = document.querySelectorAll(`.result__${methodName} [data-arg-name]`);
+
+                // TODO: export to helper
+                const argsData = [].map.call(argsNodes, argNode => {
+                    argNode.classList.remove('invalid');
+                    return {
+                        name: argNode.getAttribute('data-arg-name'),
+                        type: argNode.getAttribute('data-arg-type'),
+                        value: argNode.value
                     }
-                    return argsValues.push(arg.value)
                 });
 
-                valid && Contract.api.execute(methodName, argsValues)
+                formValidation.validateArgsByEvent(argsData, methodName)
+                    .then(Contract.api.execute.bind(null, methodName))
                     .then(
-                        result => { document.querySelector(`.result__${methodName} [data-call-result]`).innerText = JSON.stringify(result); },
-                        error => console.error(`Something went wrong with "${methodName}": ${error}`)
-                    );
+                        result => {
+                            document.querySelector(`.result__${methodName} [data-call-result]`)
+                                .innerText = JSON.stringify(result);
+                        }
+                    )
+                    .catch(errorHandler.handle);
             })
         })
     }
@@ -608,7 +606,7 @@
         document.querySelector('[data-contract-abi]').value = contractToFill.abi;
     }
 
-    function removeFromFavorite(favoriteAddress){
+    function removeFromFavorite(favoriteAddress) {
         let favoriteContracts = JSON.parse(localStorage.getItem('favoriteContracts'));
         const contractToRewrite = favoriteContracts.filter((item) => item.address !== favoriteAddress);
         localStorage.setItem('favoriteContracts', JSON.stringify(contractToRewrite));
