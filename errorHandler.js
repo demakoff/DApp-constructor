@@ -1,5 +1,5 @@
 (function() {
-    window.errorHandler = {
+    window.DApp.errorHandler = {
         handle: handle
     };
 

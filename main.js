@@ -1,8 +1,8 @@
 (function () {
-    window.findSmartContract = findSmartContract;
-    window.addToFavorite = addToFavorite;
-    window.fillFromFavorite = fillFromFavorite;
-    window.removeFromFavorite = removeFromFavorite;
+    window.DApp.findSmartContract = findSmartContract;
+    window.DApp.addToFavorite = addToFavorite;
+    window.DApp.fillFromFavorite = fillFromFavorite;
+    window.DApp.removeFromFavorite = removeFromFavorite;
 
     const dataTypes = [
         'uint8...uint256',
@@ -504,12 +504,12 @@
             liNode.innerHTML = `${favContract.name} 
                         <button 
                             type="button"
-                            onClick="fillFromFavorite('${favContract.address}');"
+                            onClick="DApp.fillFromFavorite('${favContract.address}');"
                             class="btn btn-info btn-sm">Use it
                         </button>
                         <button 
                             type="button"
-                            onClick="removeFromFavorite('${favContract.address}');"
+                            onClick="DApp.removeFromFavorite('${favContract.address}');"
                             class="btn btn-info btn-sm">Remove
                         </button>`;
             favoriteContainer.appendChild(liNode);
@@ -521,14 +521,14 @@
         document.querySelector('[data-output-container]').innerHTML = '';
         const contractAddress = document.querySelector('[data-contract-address]').value;
 
-        if (!formValidation.dataTypesRegExp.address.test(contractAddress)) {
+        if (!DApp.formValidation.dataTypesRegExp.address.test(contractAddress)) {
             document.querySelector('[data-contract-address]').classList.add('invalid');
             return;
         }
 
         let contractAbi = document.querySelector('[data-contract-abi]').value;
         contractAbi = contractAbi ? JSON.parse(contractAbi.replace(/'/g, '"')) : erc20Abi;
-        Contract(contractAbi, contractAddress);
+        DApp.Contract(contractAbi, contractAddress);
 
         outputContractData(contractAbi);
     }
@@ -540,12 +540,12 @@
 
             if (!name) return;  // filter out events, fallback etc from ABI
 
-            const resultNode = templates.getPropertyLine(methodAbi);
+            const resultNode = DApp.templates.getPropertyLine(methodAbi);
             document.querySelector('[data-output-container]').appendChild(resultNode);
 
             if (inputs.length) { return; }
 
-            Contract.api.read(name)
+            DApp.Contract.api.read(name)
                 .then(
                     result => { document.querySelector(`.result__${name} [data-call-result]`).innerText = result; },
                     error => console.error(`Something went wrong with "${name}": ${error}`)
@@ -571,15 +571,15 @@
                     }
                 });
 
-                formValidation.validateArgsByEvent(argsData, methodName)
-                    .then(Contract.api.execute.bind(null, methodName))
+                DApp.formValidation.validateArgsByEvent(argsData, methodName)
+                    .then(DApp.Contract.api.execute.bind(null, methodName))
                     .then(
                         result => {
                             document.querySelector(`.result__${methodName} [data-call-result]`)
                                 .innerText = JSON.stringify(result);
                         }
                     )
-                    .catch(errorHandler.handle);
+                    .catch(DApp.errorHandler.handle);
             })
         })
     }

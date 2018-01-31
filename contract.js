@@ -1,5 +1,5 @@
 (function () {
-    window.Contract = Contract;
+    window.DApp.Contract = Contract;
 
     const POLLING_DELAY = 700;
     const POLLING_LIMIT = 30000;
@@ -18,7 +18,7 @@
         function encodeFunctionCall(name, args = []) {
             // TODO accept abi object?
             const methodABI = getMethodABI(name);
-            const solidityFunction = new SolidityFunction('', methodABI, '');
+            const solidityFunction = new DApp.SolidityFunction('', methodABI, '');
             return solidityFunction.toPayload(args).data;
         }
 

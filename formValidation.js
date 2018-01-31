@@ -3,7 +3,7 @@
         address: /^0x[0-9a-f]{40}$/i
     };
 
-    window.formValidation = {
+    window.DApp.formValidation = {
         validateArgsByEvent: validateArgsByEvent,
         dataTypesRegExp: dataTypesRegExp
     };
