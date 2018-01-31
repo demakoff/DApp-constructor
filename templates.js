@@ -1,6 +1,9 @@
-(function(){
+(function () {
+    window.DApp.templates = {
+        getPropertyLine: getPropertyLine
+    };
 
-    function getPropertyLine(args){
+    function getPropertyLine(args) {
         let template = `<div class='col-sm-4'>
                         <strong>${args.name} :</strong>
                     </div>
@@ -38,8 +41,4 @@
 
         return resultNode;
     }
-
-    window.templates = {
-        getPropertyLine: getPropertyLine
-    };
 })();

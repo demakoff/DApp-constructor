@@ -7957,7 +7957,7 @@
             return sha3(this._name).slice(0, 8);
         };
 
-        window.SolidityFunction = SolidityFunction;
+        window.DApp.SolidityFunction = SolidityFunction;
         module.exports = SolidityFunction;
 
 

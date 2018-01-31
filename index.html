@@ -31,8 +31,8 @@
                           rows="5"
                           placeholder="Please enter custom ABI or leave empty to use ERC20 ABI"></textarea>
             </div>
-            <button type="button" class="btn btn-primary" onClick="findSmartContract();">Find Smart Contract</button>
-            <button type="button" class="btn btn-primary" onClick="addToFavorite();">Add To Favorite</button>
+            <button type="button" class="btn btn-primary" onClick="DApp.findSmartContract();">Find Smart Contract</button>
+            <button type="button" class="btn btn-primary" onClick="DApp.addToFavorite();">Add To Favorite</button>
         </div>
         <div class="favorite-form">
             <h5>My Favorite Contracts:</h5>
@@ -54,10 +54,14 @@
         crossorigin="anonymous"></script>
 
 <!--</script>-->
+<script>window.DApp = {};</script>
 <script src="templates.js"></script>
-<script src="main.js"></script>
+<script src="errorHandler.js"></script>
 <script src="solidityFunction.js"></script>
 <script src="contract.js"></script>
+<script src="formValidation.js"></script>
+<script src="eventHandlers.js"></script>
+<script src="main.js"></script>
 
 </body>
 </html>
