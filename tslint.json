@@ -1,0 +1,48 @@
+{
+    "extends": [
+        "tslint:recommended",
+        "tslint-eslint-rules",
+        "tslint-config-prettier"
+    ],
+    "rules": {
+        "max-line-length": {
+            "severity": "warning",
+            "options": [
+                120
+            ]
+        },
+        "no-console": false,
+        "object-literal-sort-keys": false,
+        "no-use-before-declare": true,
+        "quotemark": {
+            "options": [
+                "single",
+                "avoid-escape"
+            ]
+        },
+        "trailing-comma": {
+            "options": {
+                "multiline": "never"
+            }
+        },
+        "object-curly-spacing": true,
+        "ordered-imports": false,
+        "no-empty": { "severity": "warning" },
+        "member-access": { "severity": "warning" },
+        "semicolon": [true, "always"],
+        "ter-indent": [
+            true, 4,
+            {
+                "FunctionDeclaration": {
+                    "parameters": 1,
+                    "body": 1
+                },
+                "FunctionExpression": {
+                    "parameters": 1,
+                    "body": 1
+                },
+                "MemberExpression": 1
+            }
+        ]
+    }
+}
