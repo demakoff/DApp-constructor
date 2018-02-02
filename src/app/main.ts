@@ -1,6 +1,5 @@
 import * as erc20Abi from '../constants/erc20.abi.json';
 import * as storjAbi from '../constants/storj.abi.json';
-import { DATA_TYPES } from '../constants/solidity';
 
 import { onCallMethod } from './eventHandlers';
 import { isValidAddress } from './formValidation';
