@@ -3,13 +3,14 @@ const POLLING_LIMIT = 30000;
 
 declare const web3;
 import { polling } from './helpers';
+import { IExecuteParams } from './entities';
 import * as SolidityFunction from 'web3/lib/web3/function';
 
 export interface IContract {
     (abi: any, address: string): void;
     read: (name: string, args?: any[]) => Promise<any>;
     write: (name: string, args?: any[], options?: any) => Promise<any>;
-    execute: (name: string, args?: any[]) => Promise<any>;
+    execute: (IExecuteParams) => Promise<any>;
 }
 
 function contractFactory(abi: any, address: string): void {
@@ -94,7 +95,7 @@ function contractFactory(abi: any, address: string): void {
      * @param options
      * @returns {*}
      */
-    (contractFactory as IContract).execute = (name: string, args: any[] = [], options: any = {}): Promise<any> => {
+    (contractFactory as IContract).execute = ({ name, args = [], options = {} }: IExecuteParams ): Promise<any> => {
         const { constant } = getMethodABI(name);
         return constant
             ? (contractFactory as IContract).read(name, args)

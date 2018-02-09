@@ -1,3 +1,5 @@
+import { IExecuteParams } from './entities';
+
 export const polling = (signal, interval, limit): Promise<any> => {
     return Promise.resolve(signal())
         .then(result => result
@@ -12,4 +14,19 @@ export const polling = (signal, interval, limit): Promise<any> => {
                 }, interval);
             })
         );
+};
+
+export const getTransformedArgs = (methodName: string, args: any[]): IExecuteParams => {
+    return {
+        name: methodName,
+        args: args.reduce((mem, oneArg) => {
+            if (oneArg.type !== 'payable') {
+                mem.push(oneArg.value);
+            }
+            return mem;
+        }, []),
+        options: {
+            value: +args.find(oneArg => oneArg.type == 'payable')['value']
+        }
+    }
 };

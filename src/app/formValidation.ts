@@ -43,7 +43,7 @@ const validateArg = ({ name, type, value }, methodName): any => new Promise((res
             methodName
         });
     }
-    resolve(value);
+    resolve({ value, type });
 });
 
 const isValueValid = (type: string, value: string): boolean => {

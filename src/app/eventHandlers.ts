@@ -3,6 +3,7 @@ declare const DApp;
 import { handle } from './errorHandler';
 import { Contract } from './contract';
 import { validateArgsByEvent } from './formValidation';
+import { getTransformedArgs } from './helpers';
 
 export const onCallMethod = (event: Event): void => {
     const methodName = (event.target as HTMLButtonElement).getAttribute('data-method-name');
@@ -19,7 +20,8 @@ export const onCallMethod = (event: Event): void => {
     });
 
     validateArgsByEvent(argsData, methodName)
-        .then(Contract.execute.bind(null, methodName))
+        .then(getTransformedArgs.bind(null, methodName))
+        .then(Contract.execute)
         .then(result => {
             document.querySelector(`.result__${methodName} [data-call-result]`)
                 .innerHTML = JSON.stringify(result);
