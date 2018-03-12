@@ -66,7 +66,7 @@ export function removeFromFavorite(favoriteAddress) {
 }
 
 function updateFavorites() {
-    const favoriteContracts = JSON.parse(localStorage.getItem('favoriteContracts'));
+    const favoriteContracts = JSON.parse(localStorage.getItem('favoriteContracts')) || [];
     const favoriteContainer = document.querySelector('[data-favor-container]');
     favoriteContainer.innerHTML = '';
 
